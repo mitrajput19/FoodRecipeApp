@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TextInput } from 'react-native';
+import { View, Text, ScrollView, Image, TextInput ,TouchableOpacity } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -6,12 +6,14 @@ import { BellIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon } from 'react-
 import Categories from '../components/categories';
 import axios from 'axios';
 import Recipes from '../components/recipes';
+// import { TouchableOpacity } from 'react-native-web';
 
 export default function HomeScreen() {
 
   const [activeCategory, setActiveCategory] = useState('Beef');
   const [categories, setCategories] = useState([]);
   const [meals, setMeals] = useState([]);
+  const [search_text , setSearchText] = useState();
   
   useEffect(() => {
     getCategories();
@@ -45,7 +47,17 @@ export default function HomeScreen() {
     }
   }
 
-  
+  const search_this = async (search_text) =>{
+    console.log(search_text);
+    // try {
+    //   const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${search_text}`);
+    //   if( response && response.data){
+    //     setMeals(response.data.meals);
+    //   }
+    // } catch (error) {
+    //   console.log('error: ',error.message);
+    // }
+  }
 
  
 
@@ -67,17 +79,20 @@ export default function HomeScreen() {
         <View>
         <Text style={{fontSize: hp(3.8) }} className="font-semibold text-neutral-600"> Make your own food,</Text>
         </View>
-        <Text style={{fontSize: hp(3.8) }} className="font-semibold text-neutral-600">Stay at <Text className="text-amber-400">home</Text></Text>
+        <Text style={{fontSize: hp(3.8) }} className="font-semibold text-neutral-600">Stay at <Text className="text-amber-400">Home</Text></Text>
         </View>
 
         {/* Search bar */}
         <View className="mx-4 flex-row items-center rounded-full bg-black/5 p-[6px]">
           <TextInput 
+          onChangeText={text => setSearchText(text)} value={search_text} 
           placeholder='Search any recipe' placeholderTextColor={'gray'} style={{fontSize: hp(1.7)}}
           className = "flex-1 text-base mb-1 pl-3 tracking-wider"
           />
           <View className="bg-white rounded-full p-3">
-            <MagnifyingGlassIcon size={hp(2.5)} strokeWidth={3} color='gray' />
+            <TouchableOpacity onPress={() =>search_this(search_text)}>
+            <MagnifyingGlassIcon size={hp(2.5)} strokeWidth={3} color='gray'  />
+            </TouchableOpacity>
           </View>
         </View>
 
